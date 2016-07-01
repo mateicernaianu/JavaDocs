@@ -1,9 +1,6 @@
 package exercise.exercise3;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Created by Radu.Hoaghe on 04/20/2015.
@@ -33,6 +30,7 @@ public class Exercise3 {
     public void addElementsToSets(){
 
         TreeSet<String> set1 = new TreeSet<String>();
+        TreeSet<String> setComparator = new TreeSet<String>(new TreeComparator());
         HashSet<String> set2 = new HashSet<String>();
         LinkedHashSet<String> set3 = new LinkedHashSet<String>();
 
@@ -60,5 +58,12 @@ public class Exercise3 {
         // TODO Exercise #3 d) Add to the TreeSet two elements that already exist in the Set
 
         // TODO Exercise #3 d) and print again the TreeSet. What do you see?
+
+        //SORT
+
+        setComparator.addAll(set1);
+        System.out.println("SORTED SET " + setComparator);
+
+        System.out.println("After sort");
     }
 }
