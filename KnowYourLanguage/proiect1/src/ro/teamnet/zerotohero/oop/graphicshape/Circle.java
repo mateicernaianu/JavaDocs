@@ -1,4 +1,7 @@
 package ro.teamnet.zerotohero.oop.graphicshape;
+import ro.teamnet.zerotohero.Exceptions.Exception1;
+import ro.teamnet.zerotohero.Exceptions.Exception2;
+
 import java.lang.Math;
 /**
  * Created by user on 6/30/2016.
@@ -31,7 +34,11 @@ public class Circle extends Shape {
         return xPos;
     }
 
-    public void setxPos(int xPos) {
+    public void setxPos(int xPos) throws Exception2 {
+
+        if(xPos == 0)
+            if(xPos == 0)
+                throw new Exception2("nu ai voie sa pui 0 pe xPOS");
         this.xPos = xPos;
     }
 
@@ -44,10 +51,14 @@ public class Circle extends Shape {
     }
 
     public int getRadius() {
+
         return radius;
     }
 
-    public void setRadius(int radius) {
+    public void setRadius(int radius) throws Exception1 {
+
+        if(radius == 0)
+            throw new Exception1("nu ai voie sa pui 0");
         this.radius = radius;
     }
 

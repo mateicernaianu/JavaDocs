@@ -1,5 +1,7 @@
 package ro.teamnet.zerotohero.oop.graphicshape;
 
+import ro.teamnet.zerotohero.Exceptions.Exception1;
+
 /**
  * Created by user on 6/30/2016.
  */
@@ -12,9 +14,9 @@ public class Circles {
         circle.fillColor((float)3.3);
     }
 
-    public double getAreaPub(){
+    public double getAreaPub() throws Exception1 {
         Circle circle = new Circle();
-        circle.setRadius(10);
+
         return circle.area();
     }
 }

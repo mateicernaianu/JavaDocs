@@ -1,5 +1,7 @@
 package ro.teamnet.zerotohero.oop.runapp;
 
+import ro.teamnet.zerotohero.Exceptions.Exception1;
+import ro.teamnet.zerotohero.Exceptions.Exception2;
 import ro.teamnet.zerotohero.canvas.Canvas;
 import ro.teamnet.zerotohero.oop.graphicshape.*;
 
@@ -8,8 +10,61 @@ import ro.teamnet.zerotohero.oop.graphicshape.*;
  */
 public class RunApp {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception1 {
         Circles circles = new Circles();
+
+        //=====================EXCEPTII==========================
+        Circle circle = new Circle();
+        try{//nu se arunca
+            circle.setRadius(10);
+        }
+        catch(Exception1 e)
+        {
+            System.out.println(e.getMessage());
+        }
+
+        try{//se arunca
+            circle.setRadius(0);
+        }
+        catch(Exception1 e)
+        {
+            System.out.println(e.getMessage());
+        }
+        //======================================================================
+
+
+        //=====================EXCEPTII MULTIPLE==========================
+        try{//nu se arunca
+            circle.setRadius(10);
+            circle.setxPos(10);
+        }
+        catch(Exception1 e)
+        {
+            System.out.println(e.getMessage());
+        }
+        catch(Exception2 e)
+        {
+            System.out.println(e.getMessage());
+        }
+
+        try{//se arunca
+            circle.setRadius(0);
+            circle.setxPos(0);
+        }
+        catch(Exception1 e)
+        {
+            System.out.println(e.getMessage());
+        }
+        catch(Exception2 e)
+        {
+            System.out.println(e.getMessage());
+        }
+        finally{
+            System.out.println("aici");
+        }
+        //======================================================================
+
+
         System.out.println("The default circle area is " + circles.getAreaPub());
         circles.getAreaDef();
         Canvas canvas = new Canvas();
