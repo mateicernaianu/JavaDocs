@@ -6,7 +6,7 @@ import java.util.*;
  * Exercise 3. Implement a HashMap from scratch. In order to pass all the tests
  * you need to implement all the methods defined below. The key-value pair will
  * be encapsulated in the MyHashMap.MyEntry object defined below.
- *
+ * <p>
  * The buckets list in which each MyEntry object will be stored is stored in "buckets" object.
  */
 public class MyHashMap {
@@ -20,7 +20,7 @@ public class MyHashMap {
 
         // Initialize buckets list
         buckets = new ArrayList<LinkedList<MyEntry>>();
-        for(Integer i = 0; i < capacity; i++) {
+        for (Integer i = 0; i < capacity; i++) {
             buckets.add(new LinkedList<MyEntry>());
         }
     }
@@ -56,12 +56,27 @@ public class MyHashMap {
 
     public boolean containsValue(String value) {
         // TODO
+        for (LinkedList<MyEntry> le : buckets) {
+            for (MyEntry var:le){
+                if (var.equals(value))
+                       return true;
+            }
+        }
+
         return false;
     }
 
     public int size() {
         // TODO Return the number of the Entry objects stored in all the buckets
-        return 0;
+        int count=0;
+        for (LinkedList<MyEntry> le : buckets) {
+            for (MyEntry var:le){
+                count++;
+            }
+        }
+
+
+        return count;
     }
 
     public void clear() {
