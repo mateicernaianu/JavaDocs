@@ -26,56 +26,132 @@ public class MyHashMap {
     }
 
     public String get(String key) {
-        // TODO
+
+        LinkedList<MyEntry> list ;
+        if(key == null)
+            list = buckets.get(0);
+        else
+            list = buckets.get(Math.abs(key.hashCode()) % capacity);
+        for(MyEntry m:list)
+            if(m.key.equals(key))
+                return m.value;
         return null;
     }
 
     public void put(String key, String value) {
         // TODO
+        MyEntry entry = new MyEntry(key,value);
+
+        LinkedList<MyEntry> list ;
+        if(key == null)
+            list = buckets.get(0);
+        else
+            list = buckets.get(Math.abs(key.hashCode()) % capacity);
+        int ok = 0;
+        for(MyEntry m:list)
+            if(m.key.equals(key)) {
+                m.value = value;
+                ok = 1;
+            }
+        if(ok == 0)
+            list.add(entry);
     }
 
     public Set<String> keySet() {
-        // TODO
-        return null;
+        Set<String> set = new HashSet<String>();
+        for( LinkedList<MyEntry> i : buckets){
+            for(MyEntry j : i){
+                set.add(j.getKey());
+            }
+        }
+        return set;
     }
 
     public Collection<String> values() {
-        // TODO
-        return null;
+        ArrayList<String> list = new ArrayList<String>();
+        for( LinkedList<MyEntry> i : buckets){
+            for(MyEntry j : i){
+                list.add(j.getValue());
+            }
+        }
+        return list;
     }
 
     public String remove(String key) {
-        // TODO Returns the value associated with the key removed from the map or null if the key wasn't found
+        if(key == null){
+            return null;
+        }
+        if (capacity == 0)
+            return null;
+        int k = Math.abs(key.hashCode())%capacity;
+        LinkedList<MyEntry> list = buckets.get(k);
+        for(MyEntry m:list)
+            if(m.key.equals(key)) {
+                list.remove(m);
+                return m.getValue();
+            }
         return null;
     }
 
     public boolean containsKey(String key) {
-        // TODO
+        if (capacity == 0)
+            return false;
+        int k = Math.abs(key.hashCode())%capacity;
+        LinkedList<MyEntry> list = buckets.get(k);
+        for(MyEntry m:list)
+            if(m.key.equals(key)) {
+                return true;
+            }
         return false;
     }
 
     public boolean containsValue(String value) {
         // TODO
+        for (LinkedList<MyEntry> le : buckets) {
+            for (MyEntry var:le){
+                if (var.value.equals(value))
+                    return true;
+            }
+        }
+
         return false;
     }
 
     public int size() {
         // TODO Return the number of the Entry objects stored in all the buckets
-        return 0;
+        int count=0;
+        for (LinkedList<MyEntry> le : buckets) {
+            for (MyEntry var:le){
+                count++;
+            }
+        }
+
+
+        return count;
     }
 
     public void clear() {
         // TODO Remove all the Entry objects from the bucket list
+        buckets.clear();
     }
 
     public Set<MyEntry> entrySet() {
+        Set<MyEntry> set = new HashSet<MyEntry>();
+        for(LinkedList<MyEntry> me : buckets) {
+            for(MyEntry m:me)
+                set.add(m);
+        }
         // TODO Return a Set containing all the Entry objects
-        return null;
+        return set;
     }
 
     public boolean isEmpty() {
         // TODO
-        return false;
+        for(LinkedList<MyEntry> me : buckets) {
+            if(!me.isEmpty())
+                return false;
+        }
+        return true;
     }
 
     public static class MyEntry {
