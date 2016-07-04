@@ -109,13 +109,10 @@ public class MyHashMap {
         // TODO
         for (LinkedList<MyEntry> le : buckets) {
             for (MyEntry var:le){
-<<<<<<< HEAD
                 if (var.value.equals(value))
                     return true;
-=======
                 if (var.equals(value))
                        return true;
->>>>>>> 90b45528a4d2ee1c028743bb4799a9430deca982
             }
         }
 
