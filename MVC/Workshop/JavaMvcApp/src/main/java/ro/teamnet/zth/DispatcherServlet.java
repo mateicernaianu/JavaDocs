@@ -1,7 +1,9 @@
 package ro.teamnet.zth;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import ro.teamnet.zth.api.annotations.MyController;
 import ro.teamnet.zth.api.annotations.MyRequestMethod;
+import ro.teamnet.zth.api.annotations.MyRequestParam;
 import ro.teamnet.zth.appl.controller.DepartmentController;
 import ro.teamnet.zth.appl.controller.EmployeeController;
 import ro.teamnet.zth.appl.domain.Department;
@@ -16,7 +18,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -60,8 +65,10 @@ public class DispatcherServlet extends HttpServlet{
     }
 
     private void reply(Object r, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
         PrintWriter out = resp.getWriter();
-        out.printf(r.toString());
+        out.printf(objectMapper.writeValueAsString(r));
     }
 
     @Override
@@ -84,6 +91,7 @@ public class DispatcherServlet extends HttpServlet{
                             methodAttributes.setControllerClass(controller.getName());
                             methodAttributes.setMethodType(myReqMethod.toString());
                             methodAttributes.setMethodName(controllerMethod.getName());
+                            methodAttributes.setParameterTypes(controllerMethod.getParameterTypes());
                             allowedMethods.put(urlPath, methodAttributes);
                         }
                     }
@@ -96,7 +104,7 @@ public class DispatcherServlet extends HttpServlet{
         }
     }
 
-    private Object dispatch(HttpServletRequest req, HttpServletResponse resp) {
+    private Object dispatch(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         String path = req.getPathInfo();
 
@@ -123,9 +131,21 @@ public class DispatcherServlet extends HttpServlet{
         result = null;
         try {
             Class<?> controllerClass = Class.forName(controllerName);
+
             Object controllerInstance = controllerClass.newInstance();
-            Method method = controllerClass.getMethod(allowedMethods.get(path).getMethodName());
-            result = method.invoke(controllerInstance);
+            Method method = controllerClass.getMethod(allowedMethods.get(path).getMethodName(), allowedMethods.get(path).getParameterTypes() );
+            Parameter[] parameters = method.getParameters();
+            List<Object> parameterValues = new ArrayList<Object>();
+            for(Parameter parameter: parameters){
+                MyRequestParam annotation = parameter.getAnnotation(MyRequestParam.class);
+                String name = annotation.name();
+                String requestParamValue = req.getParameter(name);
+                Class<?> type = parameter.getType();
+                Object requestParamObject = new ObjectMapper().readValue(requestParamValue,type);
+                parameterValues.add(requestParamObject);
+            }
+
+            result = method.invoke(controllerInstance, parameterValues.toArray());
             return result;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

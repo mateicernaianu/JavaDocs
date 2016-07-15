@@ -26,6 +26,13 @@
         </dependency>
 
         <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-jaxrs</artifactId>
+            <version>1.9.13</version>
+        </dependency>
+
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
@@ -68,6 +75,7 @@
                     <url>http://192.168.99.100:49100/manager/text</url>
                     <username>admin</username>
                     <password>admin</password>
+                    <port>8090</port>
                     <path>/app</path>
                 </configuration>
             </plugin>
