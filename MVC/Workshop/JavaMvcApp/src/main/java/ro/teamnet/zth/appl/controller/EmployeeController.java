@@ -5,7 +5,6 @@ import ro.teamnet.zth.api.annotations.MyRequestMethod;
 import ro.teamnet.zth.api.annotations.MyRequestParam;
 import ro.teamnet.zth.appl.domain.Employee;
 import ro.teamnet.zth.appl.service.EmployeeService;
-import ro.teamnet.zth.appl.service.EmployeeServiceImpl;
 
 import java.util.List;
 
@@ -15,7 +14,12 @@ import java.util.List;
 @MyController(urlPath = "/employees")
 public class EmployeeController{
 
-    EmployeeService employeeService = new EmployeeServiceImpl();
+    private final EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
     @MyRequestMethod(urlPath = "/all")
     public List getAllEmployees()
     {
@@ -27,9 +31,6 @@ public class EmployeeController{
         return employeeService.findOneEmployee(id);
     }
 
-    @MyRequestMethod(urlPath = "/one")
-    public void deleteOneEmployee(@MyRequestParam(name="id") Long id){
-        employeeService.deleteOneEmployee(id);
-    }
+
 
 }
